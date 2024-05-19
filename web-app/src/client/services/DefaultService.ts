@@ -11,7 +11,7 @@ import type { llm } from "../models/llm";
 import type { orcReturnRype } from "../models/orcReturnRype";
 import type { predictReturn } from "../models/predictReturn";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://fintech-python.onrender.com";
 export class DefaultService {
   /**
    * Home
