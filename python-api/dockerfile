@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+ENV PYHTONUNBUFFERED=1
+
+RUN apt-get update
+RUN  apt-get -y install tesseract-ocr # required for pytesseract
+RUN apt-get -y install ffmpeg libsm6 libxext6 # required for opencv
+
+
+COPY . /app
+WORKDIR /app
+
+
+RUN pip install -r requirements.txt
+
+CMD [ "uvicorn main:app --port=8000 --host=0.0.0.0" ]

@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  password     String
+  expenses     Expense[]
+  budget       Budget?
+  totalBudget  Float     @default(0)
+  totalExpense Float     @default(0)
+  income       Float     @default(0)
+}
+
+enum Category {
+  FOOD
+  ELECTRICITY
+  TRANSPORT
+  SUBSCRIPTION
+  PROPERTY
+  MEDICAL
+  OTHER
+}
+
+enum Mode_Of_Payment {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+}
+
+model Expense {
+  id            String          @id @default(cuid())
+  category      Category
+  description   String?
+  amount        Float
+  date          DateTime
+  isIncome      Boolean
+  modeOfPayment Mode_Of_Payment
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model Budget {
+  id                 String @id @default(cuid())
+  foodBudget         Float  @default(0)
+  electricityBudget  Float  @default(0)
+  transportBudget    Float  @default(0)
+  subscriptionBudget Float  @default(0)
+  propertyBudget     Float  @default(0)
+  medicalBudget      Float  @default(0)
+  otherBudget        Float  @default(0)
+  user               User   @relation(fields: [userId], references: [id])
+  userId             String @unique
+}
